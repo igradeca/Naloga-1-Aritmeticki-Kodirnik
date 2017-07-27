@@ -8,12 +8,12 @@ namespace Aritmetic_coding {
     class ProbabilityData {
 
         public byte simbol { get; set; }
-        public int frequency { get; set; }
+        public ulong frequency { get; set; }
         public float probability { get; set; }
-        public int lowerBoundary { get; set; }
-        public int upperBoundary { get; set; }
+        public ulong lowerBoundary { get; set; }
+        public ulong upperBoundary { get; set; }
 
-        public ProbabilityData(byte simbol, int frequency) {
+        public ProbabilityData(byte simbol, ulong frequency) {
 
             this.simbol = simbol;
             this.frequency = frequency;

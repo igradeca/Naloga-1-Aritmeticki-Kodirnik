@@ -8,16 +8,16 @@ namespace Aritmetic_coding {
     class EncodingSimbolData {
 
         public byte simbol { get; set; }
-        public int step { get; set; }
-        public int oldLowerBoundary { get; set; }
-        public int oldUpperBoundary { get; set; }
-        public int newLowerBoundary { get; set; }
-        public int newUpperBoundary { get; set; }
-        public int E1orE2 { get; set; }
-        public int E3 { get; set; }
+        public ulong step { get; set; }
+        public ulong oldLowerBoundary { get; set; }
+        public ulong oldUpperBoundary { get; set; }
+        public ulong newLowerBoundary { get; set; }
+        public ulong newUpperBoundary { get; set; }
+        public ulong E1orE2 { get; set; }
+        public ulong E3 { get; set; }
         public int E3_Counter { get; set; }
 
-        public void Add(byte simbol, int step, int oldLowerBoundary, int oldUpperBoundary, int newLowerBoundary, int newUpperBoundary, int E1orE2, int E3, int E3_Counter) {
+        public void Add(byte simbol, ulong step, ulong oldLowerBoundary, ulong oldUpperBoundary, ulong newLowerBoundary, ulong newUpperBoundary, ulong E1orE2, ulong E3, int E3_Counter) {
 
             this.simbol = simbol;
             this.step = step;

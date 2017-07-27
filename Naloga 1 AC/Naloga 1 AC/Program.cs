@@ -17,7 +17,7 @@ namespace Naloga_1_AC {
             //Console.WriteLine(author);
 
             //byte[] bytes = ReadFileToBytes(filePath);
-            byte[] bytes = Encoding.UTF8.GetBytes("GEMMAG");
+            byte[] bytes = Encoding.UTF8.GetBytes("GEMMA");
 
             aritmetic.Encode(bytes);
 

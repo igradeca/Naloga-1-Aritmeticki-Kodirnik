@@ -10,7 +10,8 @@ namespace Aritmetic_coding
     {
         int encodingBits;
         EncodingInitializationData encodingInit;
-        List<ProbabilityData> probabilityTable;
+        //List<ProbabilityData> probabilityTable;
+        ProbabilityData[] probabilityTable;
         ulong frequenciesSum;
 
         EncodingSimbolData[] encodingTable;
@@ -19,8 +20,9 @@ namespace Aritmetic_coding
 
             this.encodingBits = encodingBits;
             encodingInit = new EncodingInitializationData(encodingBits);
-            probabilityTable = new List<ProbabilityData>();
-            frequenciesSum = 0;            
+            //probabilityTable = new List<ProbabilityData>();
+            probabilityTable = new ProbabilityData[256];
+            frequenciesSum = 0;
         }
 
         public string Author() {
@@ -55,22 +57,42 @@ namespace Aritmetic_coding
             .Select(g => new { Value = g.Key, Count = g.Count() });
 
             foreach (var x in q) {
-                probabilityTable.Add(new ProbabilityData(x.Value, x.Count));
+                probabilityTable[x.Value] = new ProbabilityData(x.Value, (ulong)x.Count);                
                 frequenciesSum += (ulong)x.Count;
+                //probabilityTable.Add(new ProbabilityData(x.Value, x.Count));
                 //Console.WriteLine("Value: " + x.Value + " Count: " + x.Count);
             }
         }
 
         private void CompleteInitializationTable() {
 
+            bool firstElement = true;
+            int previousIndex = 0;
+            for (int i = 0; i < probabilityTable.Length; i++) {
+                if (probabilityTable[i] != null) {
+                    if (firstElement) {
+                        probabilityTable[i].probability = (float)probabilityTable[i].frequency / (float)frequenciesSum;
+                        probabilityTable[i].lowerBoundary = 0;
+                        probabilityTable[i].upperBoundary = probabilityTable[i].frequency;
+                        firstElement = false;
+                    } else {
+                        probabilityTable[i].probability = (float)probabilityTable[i].frequency / (float)frequenciesSum;
+                        probabilityTable[i].lowerBoundary = probabilityTable[previousIndex].upperBoundary;
+                        probabilityTable[i].upperBoundary = probabilityTable[i].lowerBoundary + probabilityTable[i].frequency;
+                    }
+                    previousIndex = i;
+                }
+            }
+            /*
             probabilityTable[0].probability = (float)probabilityTable[0].frequency / (float)frequenciesSum;
             probabilityTable[0].lowerBoundary = 0;
             probabilityTable[0].upperBoundary = probabilityTable[0].frequency;
-            for (int i = 1; i < probabilityTable.Count; i++) {
+            for (int i = 1; i < probabilityTable.Length; i++) {
                 probabilityTable[i].probability = (float)probabilityTable[i].frequency / (float)frequenciesSum;
                 probabilityTable[i].lowerBoundary = probabilityTable[i - 1].upperBoundary;
                 probabilityTable[i].upperBoundary = probabilityTable[i].lowerBoundary + probabilityTable[i].frequency;
             }
+            */
         }
 
         private void SetEncodingTable(byte[] data) {
@@ -79,13 +101,53 @@ namespace Aritmetic_coding
             ulong oldUpperBoundary = encodingInit.maxBound;            
             ulong step;
             ulong newLowerBoundary, newUpperBoundary;
+            ulong E1orE2_Lower = 0, E1orE2_Upper = 0, E3_Lower = 0, E3_Upper = 0;
+            int E3_Counter = 0;
 
+            byte simbol;
             for (int i = 0; i < data.Length; i++) {
 
+                simbol = data[i];
+
                 step = (oldUpperBoundary - oldLowerBoundary + 1) / frequenciesSum;
-                //newLowerBoundary = oldLowerBoundary + (step * );
+                newUpperBoundary = oldLowerBoundary + (step * probabilityTable[simbol].upperBoundary) - 1;
+                newLowerBoundary = oldLowerBoundary + (step * probabilityTable[simbol].lowerBoundary);
+
+                ScaleIntervals(ref E1orE2_Lower, ref E3, ref E3_Counter, ref newLowerBoundary, ref newUpperBoundary);
+
+                encodingTable[i] = new EncodingSimbolData();
+                //encodingTable[i].Add(simbol, step, oldLowerBoundary, oldUpperBoundary, newLowerBoundary, newUpperBoundary, E1orE2, E3, E3_Counter);
+
+                oldLowerBoundary = newLowerBoundary;
+                oldUpperBoundary = newUpperBoundary;
             }
             
+        }
+
+        private void ScaleIntervals(ref ulong E1orE2, ref ulong E3, ref int E3_Counter, ref ulong lowerBoundary, ref ulong upperBoundary) {
+
+            //bool E1 = false, E2 = false;
+            bool E1AndE2Done = false;
+            while (!E1AndE2Done) {                
+                if (upperBoundary < encodingInit.secondQuater) {        // E1
+                    lowerBoundary *= 2;
+                    upperBoundary = (upperBoundary * 2) + 1;
+                    // na izhod se salje bit 0 in E3_Counter krat bit 1
+                } else if (lowerBoundary >= encodingInit.secondQuater) {        // E2
+                    lowerBoundary = 2 * (lowerBoundary - encodingInit.secondQuater);
+                    upperBoundary = (2 * (upperBoundary - encodingInit.secondQuater)) + 1;
+                    // na izhod se salje bit 1 in E3_Counter krat bit 0
+                } else {
+                    E1AndE2Done = true;
+                }
+            }
+
+            // E3
+            if (lowerBoundary >= encodingInit.firstQuater && upperBoundary < encodingInit.thirdQuarter) {
+                lowerBoundary = 2 * (lowerBoundary - encodingInit.firstQuater);
+                upperBoundary = 2 * (upperBoundary - encodingInit.firstQuater) + 1;
+                ++E3_Counter;
+            }
         }
 
         private void PrintEncodingTable() {
@@ -100,7 +162,7 @@ namespace Aritmetic_coding
                     encodingTable[i].newLowerBoundary, encodingTable[i].newUpperBoundary, encodingTable[i].E1orE2, encodingTable[i].E3, encodingTable[i].E3_Counter));
             }
         }
-
+        /*
         private void InitializeProbabilityTable(byte[] data) {      // za sortirani niz
 
             byte simbol;
@@ -125,10 +187,10 @@ namespace Aritmetic_coding
             frequenciesSum += (ulong)counter;
             //Console.WriteLine(data[data.Length - 1] + " " + counter);
         }
-
+        */
         private void TotalFreqCheck(byte[] data) {
 
-            int totalFreq = 0;
+            ulong totalFreq = 0;
             foreach (ProbabilityData item in probabilityTable) {
                 totalFreq += item.frequency;
             }
