@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naloga 1 AC", "Naloga 1 AC\Naloga 1 AC.csproj", "{DA98115B-3AAE-4D06-984D-EDBABDF5C407}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aritmetic coding", "Aritmetic coding\Aritmetic coding.csproj", "{04C615F0-4933-4BDE-B3CE-2D9174C9735B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA98115B-3AAE-4D06-984D-EDBABDF5C407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA98115B-3AAE-4D06-984D-EDBABDF5C407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA98115B-3AAE-4D06-984D-EDBABDF5C407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA98115B-3AAE-4D06-984D-EDBABDF5C407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C615F0-4933-4BDE-B3CE-2D9174C9735B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C615F0-4933-4BDE-B3CE-2D9174C9735B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C615F0-4933-4BDE-B3CE-2D9174C9735B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C615F0-4933-4BDE-B3CE-2D9174C9735B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

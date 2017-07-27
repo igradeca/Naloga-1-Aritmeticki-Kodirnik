@@ -1,0 +1,5 @@
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 AC\Aritmetic coding\bin\Debug\Aritmetic coding.dll
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 AC\Aritmetic coding\bin\Debug\Aritmetic coding.pdb
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 AC\Aritmetic coding\obj\Debug\Aritmetic coding.dll
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 AC\Aritmetic coding\obj\Debug\Aritmetic coding.pdb
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 AC\Aritmetic coding\obj\Debug\Aritmetic coding.csprojResolveAssemblyReference.cache
