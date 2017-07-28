@@ -11,15 +11,16 @@ namespace Naloga_1_AC {
         static void Main(string[] args) {
 
             AritmeticMain aritmetic = new AritmeticMain(8);
-            string filePath = "historical_data.txt";
-
-            //string author = aritmetic.Author();
-            //Console.WriteLine(author);
-
+            
+            //string filePath = "historical_data.txt";
             //byte[] bytes = ReadFileToBytes(filePath);
             byte[] bytes = Encoding.UTF8.GetBytes("GEMMA");
 
             aritmetic.Encode(bytes);
+
+            //BitsWriter writer = new BitsWriter();
+            //writer.WriteBits(bytes, 2);
+
 
             Console.ReadLine();
         }

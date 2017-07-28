@@ -119,10 +119,8 @@ namespace Aritmetic_coding
         }
 
         private void ScaleIntervals(ulong lowerBoundary, ulong upperBoundary, ref ulong E1E2Lower, ref ulong E1E2Upper, ref ulong E3Lower, ref ulong E3Upper, ref int E3_Counter) {
-                        
-            bool E1AndE2Done;
-            do {
-                E1AndE2Done = false;
+
+            while ((upperBoundary < encodingInit.secondQuater) || (lowerBoundary >= encodingInit.secondQuater)) {
                 if (upperBoundary < encodingInit.secondQuater) {
                     lowerBoundary = lowerBoundary * 2;
                     upperBoundary = (upperBoundary * 2) + 1;
@@ -131,8 +129,6 @@ namespace Aritmetic_coding
 
                         E3_Counter = 0;
                     }
-
-                    E1AndE2Done = true;
                 } else if (lowerBoundary >= encodingInit.secondQuater) {
                     lowerBoundary = 2 * (lowerBoundary - encodingInit.secondQuater);
                     upperBoundary = (2 * (upperBoundary - encodingInit.secondQuater)) + 1;
@@ -141,10 +137,8 @@ namespace Aritmetic_coding
 
                         E3_Counter = 0;
                     }
-
-                    E1AndE2Done = true;
                 }
-            } while (E1AndE2Done);
+            } 
             
             E1E2Lower = lowerBoundary;
             E1E2Upper = upperBoundary;
