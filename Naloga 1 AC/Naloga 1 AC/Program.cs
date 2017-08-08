@@ -5,22 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aritmetic_coding;
+using System.Diagnostics;
 
 namespace Naloga_1_AC {
     class Program {
         static void Main(string[] args) {
 
-            AritmeticMain aritmetic = new AritmeticMain(8);
-            
-            //string filePath = "historical_data.txt";
-            //byte[] bytes = ReadFileToBytes(filePath);
-            byte[] bytes = Encoding.UTF8.GetBytes("GEMMA");
+            AritmeticMain aritmetic = new AritmeticMain(32);
 
-            aritmetic.Encode(bytes);
+            string filePath = "proba.mp3";
+            byte[] bytes = ReadFileToBytes(filePath);
 
-            //BitsWriter writer = new BitsWriter();
+            //Krasna si bistra hci planin
+            //byte[] bytes = Encoding.UTF8.GetBytes("Krasna si bistra hci planin");
+
+            Stopwatch time = new Stopwatch();
+            time.Start();
+
+            aritmetic.InitializeWriter(bytes.Length);
+
+            WriteBytesToFile(aritmetic.Encode(bytes));            
+
+            time.Stop();
+            Console.WriteLine("Done. Time: " + time.Elapsed.TotalSeconds);
+
+            //BitsWriter writer = new BitsWriter(bytes.Length);
             //writer.WriteBits(bytes, 2);
-
+            //writer.WriteSingleBit(true);
 
             Console.ReadLine();
         }
@@ -29,6 +40,11 @@ namespace Naloga_1_AC {
 
             byte[] result = File.ReadAllBytes(filePath);
             return result;
+        }
+
+        static void WriteBytesToFile(byte[] result) {
+
+            File.WriteAllBytes("izhod.ac", result);
         }
 
 
