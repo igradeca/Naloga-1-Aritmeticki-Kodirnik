@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aritmetic_coding
-{
-    public class AritmeticMain
+namespace Aritmetic_coding {
+    public class Encoding
     {
         int encodingBits;
         EncodingInitializationData encodingInit;
@@ -17,7 +16,7 @@ namespace Aritmetic_coding
 
         BitsWriter writer;
 
-        public AritmeticMain(int encodingBits) {
+        public Encoding(int encodingBits) {
 
             this.encodingBits = encodingBits;
             encodingInit = new EncodingInitializationData(encodingBits);
@@ -211,7 +210,7 @@ namespace Aritmetic_coding
         }
 
         /*
-        private void InitializeProbabilityTable(byte[] data) {      // za sortirani niz
+        private void InitializeProbabilityTable(byte[] data) {      // za sortirani niz, to netreba ako nebus isel delat ko na prezentaciji
 
             byte simbol;
             int frequency;
@@ -221,7 +220,7 @@ namespace Aritmetic_coding
                 if (data[i - 1] != data[i]) {
                     simbol = data[i - 1];
                     frequency = counter;
-                    probabilityTable.Add(new ProbabilityData(simbol, frequency));
+                    //probabilityTable.Add(new ProbabilityData(simbol, frequency));
                     frequenciesSum += (ulong)counter;
                     //Console.WriteLine(data[i - 1] + " " + counter);
                     counter = 1;
@@ -231,7 +230,7 @@ namespace Aritmetic_coding
             }
             simbol = data[data.Length - 1];
             frequency = counter;
-            probabilityTable.Add(new ProbabilityData(simbol, frequency));
+            //probabilityTable.Add(new ProbabilityData(simbol, frequency));
             frequenciesSum += (ulong)counter;
             //Console.WriteLine(data[data.Length - 1] + " " + counter);
         }

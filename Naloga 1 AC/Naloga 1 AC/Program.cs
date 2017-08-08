@@ -9,29 +9,42 @@ using System.Diagnostics;
 
 namespace Naloga_1_AC {
     class Program {
+
+        /// <summary>
+        /// Encoding: -E proba.mp3 izhod.ac
+        /// Decoding: -D izhod.ac muzik.mp3
+        /// </summary>
+
         static void Main(string[] args) {
 
-            AritmeticMain aritmetic = new AritmeticMain(32);
-
-            string filePath = "proba.mp3";
+            string filePath = args[1];
             byte[] bytes = ReadFileToBytes(filePath);
-
             //Krasna si bistra hci planin
+            //GEMMA
             //byte[] bytes = Encoding.UTF8.GetBytes("Krasna si bistra hci planin");
 
-            Stopwatch time = new Stopwatch();
-            time.Start();
+            switch (args[0]) {
+                case "-E":
+                    Aritmetic_coding.Encoding encode = new Aritmetic_coding.Encoding(32);
 
-            aritmetic.InitializeWriter(bytes.Length);
+                    Stopwatch time = new Stopwatch();
+                    time.Start();
 
-            WriteBytesToFile(aritmetic.Encode(bytes));            
+                    encode.InitializeWriter(bytes.Length);
+                    WriteBytesToFile(encode.Encode(bytes), args[2]);
 
-            time.Stop();
-            Console.WriteLine("Done. Time: " + time.Elapsed.TotalSeconds);
+                    time.Stop();
+                    Console.WriteLine("Done. Time: " + time.Elapsed.TotalSeconds);
 
-            //BitsWriter writer = new BitsWriter(bytes.Length);
-            //writer.WriteBits(bytes, 2);
-            //writer.WriteSingleBit(true);
+                    break;
+                case "-D":
+
+                    Decoding decode = new Decoding();
+
+                    decode.InitializeDecoder(bytes[0]);
+
+                    break;
+            }
 
             Console.ReadLine();
         }
@@ -42,9 +55,9 @@ namespace Naloga_1_AC {
             return result;
         }
 
-        static void WriteBytesToFile(byte[] result) {
+        static void WriteBytesToFile(byte[] result, string filePath) {
 
-            File.WriteAllBytes("izhod.ac", result);
+            File.WriteAllBytes(filePath, result);
         }
 
 
