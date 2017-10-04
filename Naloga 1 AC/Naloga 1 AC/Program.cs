@@ -17,32 +17,41 @@ namespace Naloga_1_AC {
 
         static void Main(string[] args) {
 
-            string filePath = args[1];
-            byte[] bytes = ReadFileToBytes(filePath);
+            Aritmetic aritmetic;
+            Stopwatch time;
+
+            byte[] bytes = ReadFileToBytes(args[1]);
             //Krasna si bistra hci planin
             //GEMMA
-            //byte[] bytes = Encoding.UTF8.GetBytes("Krasna si bistra hci planin");
+            //byte[] bytes = System.Text.Encoding.UTF8.GetBytes("Packo je homo");
 
             switch (args[0]) {
                 case "-E":
-                    Aritmetic_coding.Encoding encode = new Aritmetic_coding.Encoding(32);
+                    aritmetic = new Aritmetic();
 
-                    Stopwatch time = new Stopwatch();
+                    time = new Stopwatch();
                     time.Start();
-
-                    encode.InitializeWriter(bytes.Length);
-                    WriteBytesToFile(encode.Encode(bytes), args[2]);
+                    
+                    WriteBytesToFile(aritmetic.Encode(bytes), args[2]);
 
                     time.Stop();
-                    Console.WriteLine("Done. Time: " + time.Elapsed.TotalSeconds);
+                    Console.WriteLine("Encoding done. Time: " + time.Elapsed.TotalSeconds);
 
                     break;
                 case "-D":
+                    aritmetic = new Aritmetic(bytes[0]);
 
-                    Decoding decode = new Decoding();
+                    time = new Stopwatch();
+                    time.Start();
 
-                    decode.InitializeDecoder(bytes[0]);
+                    WriteBytesToFile(aritmetic.Decode(bytes), args[2]);
 
+                    time.Stop();
+                    Console.WriteLine("Decoding done. Time: " + time.Elapsed.TotalSeconds);
+
+                    break;
+                default:
+                    Console.WriteLine("Invalid arguments.");
                     break;
             }
 

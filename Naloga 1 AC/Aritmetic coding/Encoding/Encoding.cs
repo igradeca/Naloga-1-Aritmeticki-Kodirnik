@@ -27,13 +27,7 @@ namespace Aritmetic_coding {
         public void InitializeWriter(int inputDataLenght) {
 
             writer = new BitsWriter(inputDataLenght, encodingBits);
-        }
-
-        public string Author() {
-
-            string result = "Ivan" + " " + "Gradecak" + " " + "E5031111";
-            return result;
-        }
+        }        
 
         public byte[] Encode(byte[] inputData) {
             //data.CopyTo(result, 0);
@@ -52,7 +46,7 @@ namespace Aritmetic_coding {
             //PrintEncodingTable();
             //writer.PrintResult();
 
-            //TotalFreqCheck(data);
+            //TotalFreqCheck(inputData);
 
             return writer.ReturnResult();
         }
@@ -63,7 +57,7 @@ namespace Aritmetic_coding {
             .Select(g => new { Value = g.Key, Count = g.Count() });
 
             foreach (var x in q) {
-                probabilityTable[x.Value] = new ProbabilityData(x.Value, x.Count);                
+                probabilityTable[x.Value] = new ProbabilityData(x.Value, (ulong)x.Count);                
                 frequenciesSum += (ulong)x.Count;
                 //probabilityTable.Add(new ProbabilityData(x.Value, x.Count));
                 //Console.WriteLine("Value: " + x.Value + " Count: " + x.Count);
@@ -118,10 +112,11 @@ namespace Aritmetic_coding {
                 ScaleIntervals(newLowerBoundary, newUpperBoundary, ref E1E2Lower, ref E1E2Upper, ref E3Lower, ref E3Upper, ref E3_Counter);
 
                 // za ispis tablice
-                //encodingTable[i] = new EncodingSimbolData();
-                //encodingTable[i].Add(simbol, step, oldLowerBoundary, oldUpperBoundary, newLowerBoundary, newUpperBoundary, 
-                    //E1E2Lower, E1E2Upper, E3Lower, E3Upper, E3_Counter);
-
+                /*
+                encodingTable[i] = new EncodingSimbolData();
+                encodingTable[i].Add(simbol, step, oldLowerBoundary, oldUpperBoundary, newLowerBoundary, newUpperBoundary, 
+                    E1E2Lower, E1E2Upper, E3Lower, E3Upper, E3_Counter);
+                    */
                 oldLowerBoundary = E3Lower;
                 oldUpperBoundary = E3Upper;                
             }
@@ -154,14 +149,14 @@ namespace Aritmetic_coding {
                         E3_Counter = 0;
                     }
                 }
-            } 
+            }
             
             E1E2Lower = lowerBoundary;
             E1E2Upper = upperBoundary;
 
             // E3
             while ((lowerBoundary >= encodingInit.firstQuater) && (upperBoundary < encodingInit.thirdQuarter)) {
-                lowerBoundary = 2 * (lowerBoundary - encodingInit.firstQuater);
+                lowerBoundary = 2 * (lowerBoundary - encodingInit.firstQuater); // (lowerBoundary - encodingInit.firstQuater) << 2
                 upperBoundary = 2 * (upperBoundary - encodingInit.firstQuater) + 1;
                 ++E3_Counter;
             }
@@ -196,19 +191,21 @@ namespace Aritmetic_coding {
                     (encodingTable[i].E3Lower + " " + encodingTable[i].E3Upper), encodingTable[i].E3_Counter));
             }
         }
-
+        
         private void TotalFreqCheck(byte[] data) {
 
             ulong totalFreq = 0;
             foreach (ProbabilityData item in probabilityTable) {
-                totalFreq += (ulong)item.frequency;
+                if (item != null) {
+                    totalFreq += (ulong)item.frequency;
+                }                
             }
 
             Console.WriteLine("Total freq calc: " + totalFreq);
             Console.WriteLine("Total freq: " + frequenciesSum);
             Console.WriteLine("Input data length: " + data.Length);
         }
-
+        
         /*
         private void InitializeProbabilityTable(byte[] data) {      // za sortirani niz, to netreba ako nebus isel delat ko na prezentaciji
 

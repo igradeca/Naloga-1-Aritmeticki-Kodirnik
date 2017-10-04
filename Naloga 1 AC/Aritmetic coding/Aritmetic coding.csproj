@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aritmetic.cs" />
+    <Compile Include="Decoding\BitsReader.cs" />
     <Compile Include="Decoding\Decoding.cs" />
     <Compile Include="Encoding\Encoding.cs" />
     <Compile Include="Encoding\BitsWriter.cs" />

@@ -11,9 +11,9 @@ namespace Aritmetic_coding {
         int bitLocation;
         int byteLocation;
 
-        public BitsWriter(int arrayLength, int encodingBits) {
+        public BitsWriter(int arrayLength, int encodingBits) {      // Za enkodiranje
 
-            int resultLenght = arrayLength + 1024 + 1;
+            int resultLenght = arrayLength + (1024 + 1);
             result = new byte[resultLenght];
             byteLocation = 1025;
             bitLocation = 7;
@@ -23,15 +23,20 @@ namespace Aritmetic_coding {
 
         private void InsertEncodingBitsValue(int encodingBits) {
 
-            if (encodingBits == 8) {            // 8 bit
-                result[0] = 0;
-            } else if (encodingBits == 16) {    // 16 bit
-                result[0] = 1;
-            } else if (encodingBits == 32) {    // 32 bit
-                result[0] = 2;
-            } else {                            // 64 bit
-                result[0] = 3;
-            }            
+            switch (encodingBits) {
+                case 8:
+                    result[0] = 0;
+                    break;
+                case 16:
+                    result[0] = 1;
+                    break;
+                case 32:
+                    result[0] = 2;
+                    break;
+                case 64:
+                    result[0] = 3;
+                    break;
+            }          
         }
 
         public void InsertSimbolsAndFrequencies(ProbabilityData[] probabilityTable) {
@@ -99,7 +104,6 @@ namespace Aritmetic_coding {
             }
             Console.WriteLine("");
         }
-
 
     }
 }
