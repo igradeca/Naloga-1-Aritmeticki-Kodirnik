@@ -11,8 +11,8 @@ namespace Naloga_1_AC {
     class Program {
 
         /// <summary>
-        /// Encoding: -E proba.mp3 izhod.ac
-        /// Decoding: -D izhod.ac muzik.mp3
+        /// Encoding: -E ByteRnd_10M.file izhod.ac
+        /// Decoding: -D izhod.ac ByteRnd_10M_drugi.file
         /// </summary>
 
         static void Main(string[] args) {
