@@ -1,0 +1,8 @@
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\bin\Release\Naloga 1 AC.exe.config
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\bin\Release\Naloga 1 AC.exe
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\bin\Release\Naloga 1 AC.pdb
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\bin\Release\Aritmetic coding.dll
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\bin\Release\Aritmetic coding.pdb
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\obj\Release\Naloga 1 AC.csprojResolveAssemblyReference.cache
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\obj\Release\Naloga 1 AC.exe
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Naloga 1 AC\obj\Release\Naloga 1 AC.pdb

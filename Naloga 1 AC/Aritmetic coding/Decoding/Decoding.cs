@@ -10,39 +10,41 @@ namespace Aritmetic_coding {
         List<byte> output;
         BitsReader reader;
 
-        EncodingInitializationData decodingInit;
-        ProbabilityData[] probabilityTable;
+        ulong[] simbolFrequencies;
+        ulong[] lowerBoundaries;
+        ulong[] upperBoundaries;
         ulong frequenciesSum;
-        byte bitsNumber;
+        byte encodingBits;
 
         ulong field;
         byte[] simbolValues;
         
         public Decoding(byte byteValue) {
 
-            probabilityTable = new ProbabilityData[256];
+            simbolFrequencies = new ulong[256];
+            lowerBoundaries = new ulong[256];
+            upperBoundaries = new ulong[256];
             frequenciesSum = 0;
             SetBitsNumber(byteValue);            
         }
         
         private void SetBitsNumber(byte byteValue) {
 
-            bitsNumber = 0;
+            encodingBits = 0;
             switch (byteValue) {
                 case 0:
-                    bitsNumber = 8;
+                    encodingBits = 8;
                     break;
                 case 1:
-                    bitsNumber = 16;
+                    encodingBits = 16;
                     break;
                 case 2:
-                    bitsNumber = 32;
+                    encodingBits = 32;
                     break;
                 case 3:
-                    bitsNumber = 64;
+                    encodingBits = 64;
                     break;
             }
-            decodingInit = new EncodingInitializationData(bitsNumber);
         }
 
         public byte[] Decode(byte[] inputData) {
@@ -57,12 +59,10 @@ namespace Aritmetic_coding {
             output = new List<byte>();
             reader = new BitsReader(inputData);
 
-            //byte[] result = new byte[10];
-
             SetProbabilityTable(inputData);
             CompleteInitializationTable();
 
-            field = reader.GetDataField((byte)(bitsNumber - 1));
+            field = reader.GetDataField((byte)(encodingBits - 1));
 
             SetSimbolValuesArray();
 
@@ -84,8 +84,8 @@ namespace Aritmetic_coding {
 
                 if (k != 0) {
                     byte simbol = (byte)((i - 1)/ 4);
-                    frequenciesSum += k;
-                    probabilityTable[simbol] = new ProbabilityData(simbol, k);
+                    simbolFrequencies[simbol] = k;
+                    frequenciesSum += k;                    
                 }                
             }
         }
@@ -94,17 +94,16 @@ namespace Aritmetic_coding {
 
             bool firstElement = true;
             int previousIndex = 0;
-            for (int i = 0; i < probabilityTable.Length; i++) {
-                if (probabilityTable[i] != null) {
+            for (int i = 0; i < simbolFrequencies.Length; i++) {
+                if (simbolFrequencies[i] != 0) {
                     if (firstElement) {
-                        probabilityTable[i].probability = (float)probabilityTable[i].frequency / (float)frequenciesSum;
-                        probabilityTable[i].lowerBoundary = 0;
-                        probabilityTable[i].upperBoundary = (ulong)probabilityTable[i].frequency;
+                        lowerBoundaries[i] = 0;
+                        upperBoundaries[i] = (ulong)simbolFrequencies[i];
                         firstElement = false;
                     } else {
-                        probabilityTable[i].probability = (float)probabilityTable[i].frequency / (float)frequenciesSum;
-                        probabilityTable[i].lowerBoundary = probabilityTable[previousIndex].upperBoundary;
-                        probabilityTable[i].upperBoundary = probabilityTable[i].lowerBoundary + (ulong)probabilityTable[i].frequency;
+
+                        lowerBoundaries[i] = upperBoundaries[previousIndex];
+                        upperBoundaries[i] = lowerBoundaries[i] + (ulong)simbolFrequencies[i];
                     }
                     previousIndex = i;
                 }
@@ -116,8 +115,8 @@ namespace Aritmetic_coding {
             simbolValues = new byte[frequenciesSum];
 
             for (int i = 0, j = 0; i < 255; i++) {
-                if (probabilityTable[i] != null) {                     // Ovaj if sluzi samo radi ABCCD primjera jer nema sva slova
-                    for (ulong k = probabilityTable[i].lowerBoundary; k < probabilityTable[i].upperBoundary; k++) {
+                if (simbolFrequencies[i] != 0) {                     // Ovaj if sluzi samo radi ABCCD primjera jer nema sva slova
+                    for (ulong k = lowerBoundaries[i]; k < upperBoundaries[i]; k++) {
                         simbolValues[j++] = (byte)i;
                     }
                 }                
@@ -126,48 +125,50 @@ namespace Aritmetic_coding {
 
         private void SetDecodingTable() {
 
-            ulong lowerBoundary = decodingInit.minBound;
-            ulong upperBoundary = decodingInit.maxBound;
+            ulong minBound = 0;
+            ulong maxBound = (ulong)Math.Pow(2, (encodingBits - 1)) - 1;
+            ulong secondQuater = (ulong)Math.Floor((decimal)(maxBound + 1) / 2);
+            ulong firstQuater = (ulong)Math.Floor((decimal)secondQuater / 2);
+            ulong thirdQuarter = (ulong)Math.Floor((decimal)firstQuater * 3);
+
             ulong step, value;
             byte simbol;
 
             ulong i = 0;
             while (true) {
-                step = (upperBoundary - lowerBoundary + 1) / frequenciesSum;
-                value = (field - lowerBoundary) / step;
+                step = (maxBound - minBound + 1) / frequenciesSum;
+                value = (field - minBound) / step;
 
                 simbol = simbolValues[value];
 
-                output.Add(probabilityTable[simbol].simbol);
+                output.Add(simbol);
 
-                upperBoundary = lowerBoundary + (step * probabilityTable[simbol].upperBoundary) - 1;
-                lowerBoundary = lowerBoundary + (step * probabilityTable[simbol].lowerBoundary);
+                maxBound = minBound + (step * upperBoundaries[simbol]) - 1;
+                minBound = minBound + (step * lowerBoundaries[simbol]);
 
                 if (++i >= frequenciesSum) {
                     break;
                 }
 
-                while ((upperBoundary < decodingInit.secondQuater) || (lowerBoundary >= decodingInit.secondQuater)) {
-                    if (upperBoundary < decodingInit.secondQuater) {    // E1
-                        lowerBoundary = lowerBoundary * 2;
-                        upperBoundary = (upperBoundary * 2) + 1;
+                while ((maxBound < secondQuater) || (minBound >= secondQuater)) {
+                    if (maxBound < secondQuater) {    // E1
+                        minBound = minBound * 2;
+                        maxBound = (maxBound * 2) + 1;
                         field = 2 * field + (ulong)(reader.ReadBit() ? 1 : 0);
 
-                    } else if (lowerBoundary >= decodingInit.secondQuater) {    // E2
-                        lowerBoundary = 2 * (lowerBoundary - decodingInit.secondQuater);
-                        upperBoundary = 2 * (upperBoundary - decodingInit.secondQuater) + 1;
-                        field = 2 * (field - decodingInit.secondQuater) + (ulong)(reader.ReadBit() ? 1 : 0);
+                    } else if (minBound >= secondQuater) {    // E2
+                        minBound = 2 * (minBound - secondQuater);
+                        maxBound = 2 * (maxBound - secondQuater) + 1;
+                        field = 2 * (field - secondQuater) + (ulong)(reader.ReadBit() ? 1 : 0);
                     }
                 }
 
-                while ((lowerBoundary >= decodingInit.firstQuater) && (upperBoundary < decodingInit.thirdQuarter)) {
-                    lowerBoundary = 2 * (lowerBoundary - decodingInit.firstQuater); // (lowerBoundary - encodingInit.firstQuater) << 2
-                    upperBoundary = 2 * (upperBoundary - decodingInit.firstQuater) + 1;
-                    field = 2 * (field - decodingInit.firstQuater) + (ulong)(reader.ReadBit() ? 1 : 0);
+                while ((minBound >= firstQuater) && (maxBound < thirdQuarter)) {
+                    minBound = 2 * (minBound - firstQuater); // (lowerBoundary - encodingInit.firstQuater) << 2
+                    maxBound = 2 * (maxBound - firstQuater) + 1;
+                    field = 2 * (field - firstQuater) + (ulong)(reader.ReadBit() ? 1 : 0);
                 }
             }
-
-            //return 
         }
 
     }

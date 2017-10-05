@@ -39,11 +39,11 @@ namespace Aritmetic_coding {
             }          
         }
 
-        public void InsertSimbolsAndFrequencies(ProbabilityData[] probabilityTable) {
+        public void InsertSimbolsAndFrequencies(ulong[] simbolFrequencies) {
 
-            for (int i = 0; i < probabilityTable.Length; i++) {
-                if (probabilityTable[i] != null) {
-                    byte[] frequency = BitConverter.GetBytes(probabilityTable[i].frequency);
+            for (int i = 0; i < simbolFrequencies.Length; i++) {
+                if (simbolFrequencies[i] != 0) {
+                    byte[] frequency = BitConverter.GetBytes(simbolFrequencies[i]);
                     frequency.CopyTo(result, ((i * 4) + 1));
                 }
             }
@@ -71,9 +71,6 @@ namespace Aritmetic_coding {
                 --bitLocation;
             }
             CheckBitLocation();
-
-            //Console.Write("byte " + byteLocation + ": ");
-            //Console.WriteLine(Convert.ToString(currentByte, 2).PadLeft(8, '0'));
         }
 
         private void CheckBitLocation() {
@@ -87,22 +84,6 @@ namespace Aritmetic_coding {
         public byte[] ReturnResult() {
 
             return result;
-        }
-
-        public void PrintResult() {
-
-            for (int i = 1025; i <= (byteLocation); i++) {
-                byte currentByte = result[i];
-                if (i == (byteLocation)) {
-                    string temp = Convert.ToString(currentByte, 2).PadLeft(8, '0');
-                    temp = temp.Substring(0, (7 - bitLocation));
-                    Console.Write(temp);
-                } else {
-                    Console.Write(Convert.ToString(currentByte, 2).PadLeft(8, '0'));
-                }
-                Console.Write(" ");
-            }
-            Console.WriteLine("");
         }
 
     }

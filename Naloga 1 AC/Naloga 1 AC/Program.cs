@@ -11,8 +11,8 @@ namespace Naloga_1_AC {
     class Program {
 
         /// <summary>
-        /// Encoding: -E proba.mp3 izhod.ac
-        /// Decoding: -D izhod.ac muzik.mp3
+        /// Encoding: -E ByteRnd_10M.file izhod.ac
+        /// Decoding: -D izhod.ac ByteRnd_10M_drugi.file
         /// </summary>
 
         static void Main(string[] args) {
@@ -23,7 +23,7 @@ namespace Naloga_1_AC {
             byte[] bytes = ReadFileToBytes(args[1]);
             //Krasna si bistra hci planin
             //GEMMA
-            //byte[] bytes = System.Text.Encoding.UTF8.GetBytes("Packo je homo");
+            //byte[] bytes = System.Text.Encoding.UTF8.GetBytes("ABCCD");
 
             switch (args[0]) {
                 case "-E":
