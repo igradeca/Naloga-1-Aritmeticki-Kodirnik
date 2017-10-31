@@ -49,13 +49,6 @@ namespace Aritmetic_coding {
 
         public byte[] Decode(byte[] inputData) {
 
-            int counter = 0;
-            for (int i = 1025; i < inputData.Length; i++) {
-                if (inputData[i] == 0) {
-                    ++counter;
-                }
-            }
-
             output = new List<byte>();
             reader = new BitsReader(inputData);
 
@@ -101,7 +94,6 @@ namespace Aritmetic_coding {
                         upperBoundaries[i] = (ulong)simbolFrequencies[i];
                         firstElement = false;
                     } else {
-
                         lowerBoundaries[i] = upperBoundaries[previousIndex];
                         upperBoundaries[i] = lowerBoundaries[i] + (ulong)simbolFrequencies[i];
                     }
@@ -115,7 +107,7 @@ namespace Aritmetic_coding {
             simbolValues = new byte[frequenciesSum];
 
             for (int i = 0, j = 0; i < 255; i++) {
-                if (simbolFrequencies[i] != 0) {                     // Ovaj if sluzi samo radi ABCCD primjera jer nema sva slova
+                if (simbolFrequencies[i] != 0) {
                     for (ulong k = lowerBoundaries[i]; k < upperBoundaries[i]; k++) {
                         simbolValues[j++] = (byte)i;
                     }
@@ -152,21 +144,21 @@ namespace Aritmetic_coding {
 
                 while ((maxBound < secondQuater) || (minBound >= secondQuater)) {
                     if (maxBound < secondQuater) {    // E1
-                        minBound = minBound * 2;
-                        maxBound = (maxBound * 2) + 1;
-                        field = 2 * field + (ulong)(reader.ReadBit() ? 1 : 0);
+                        minBound = minBound << 1;
+                        maxBound = (maxBound << 1) + 1;                        
+                        field = (field << 1) + (ulong)(reader.ReadBit() ? 1 : 0);
 
                     } else if (minBound >= secondQuater) {    // E2
-                        minBound = 2 * (minBound - secondQuater);
-                        maxBound = 2 * (maxBound - secondQuater) + 1;
-                        field = 2 * (field - secondQuater) + (ulong)(reader.ReadBit() ? 1 : 0);
+                        minBound = (minBound - secondQuater) << 1;
+                        maxBound = ((maxBound - secondQuater) + 1) << 1;                        
+                        field = ((field - secondQuater) << 1) + (ulong)(reader.ReadBit() ? 1 : 0);
                     }
                 }
 
                 while ((minBound >= firstQuater) && (maxBound < thirdQuarter)) {
-                    minBound = 2 * (minBound - firstQuater); // (lowerBoundary - encodingInit.firstQuater) << 2
-                    maxBound = 2 * (maxBound - firstQuater) + 1;
-                    field = 2 * (field - firstQuater) + (ulong)(reader.ReadBit() ? 1 : 0);
+                    minBound = (minBound - firstQuater) << 1;
+                    maxBound = ((maxBound - firstQuater) << 1) + 1;                    
+                    field = ((field - firstQuater) << 1) + (ulong)(reader.ReadBit() ? 1 : 0) ;
                 }
             }
         }

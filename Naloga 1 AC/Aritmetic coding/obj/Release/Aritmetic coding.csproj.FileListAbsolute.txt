@@ -2,3 +2,4 @@ E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik
 E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Aritmetic coding\bin\Release\Aritmetic coding.pdb
 E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Aritmetic coding\obj\Release\Aritmetic coding.dll
 E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Aritmetic coding\obj\Release\Aritmetic coding.pdb
+E:\Workspaces\FERI\ljeto\Računalniška multimedia\Naloga 1 Aritmeticki kodirnik\Naloga 1 AC\Aritmetic coding\obj\Release\Aritmetic coding.csprojResolveAssemblyReference.cache

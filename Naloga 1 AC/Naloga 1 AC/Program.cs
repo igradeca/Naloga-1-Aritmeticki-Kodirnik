@@ -21,7 +21,6 @@ namespace Naloga_1_AC {
             Stopwatch time;
 
             byte[] bytes = ReadFileToBytes(args[1]);
-            //Krasna si bistra hci planin
             //GEMMA
             //byte[] bytes = System.Text.Encoding.UTF8.GetBytes("ABCCD");
 
