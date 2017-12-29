@@ -106,7 +106,7 @@ namespace Aritmetic_coding {
 
             simbolValues = new byte[frequenciesSum];
 
-            for (int i = 0, j = 0; i < 255; i++) {
+            for (int i = 0, j = 0; i < 256; i++) {
                 if (simbolFrequencies[i] != 0) {
                     for (ulong k = lowerBoundaries[i]; k < upperBoundaries[i]; k++) {
                         simbolValues[j++] = (byte)i;
@@ -118,10 +118,10 @@ namespace Aritmetic_coding {
         private void SetDecodingTable() {
 
             ulong minBound = 0;
-            ulong maxBound = (ulong)Math.Pow(2, (encodingBits - 1)) - 1;
-            ulong secondQuater = (ulong)Math.Floor((decimal)(maxBound + 1) / 2);
-            ulong firstQuater = (ulong)Math.Floor((decimal)secondQuater / 2);
-            ulong thirdQuarter = (ulong)Math.Floor((decimal)firstQuater * 3);
+            var maxBound = (ulong)Math.Pow(2, (encodingBits - 1)) - 1;
+            var secondQuater = (maxBound + 1) / 2;
+            var firstQuater = secondQuater / 2;
+            var thirdQuarter = firstQuater * 3;
 
             ulong step, value;
             byte simbol;
@@ -147,18 +147,18 @@ namespace Aritmetic_coding {
                         minBound = minBound << 1;
                         maxBound = (maxBound << 1) + 1;                        
                         field = (field << 1) + (ulong)(reader.ReadBit() ? 1 : 0);
-
-                    } else if (minBound >= secondQuater) {    // E2
+                    }
+                    else if (minBound >= secondQuater) {    // E2
                         minBound = (minBound - secondQuater) << 1;
-                        maxBound = ((maxBound - secondQuater) + 1) << 1;                        
+                        maxBound = ((maxBound - secondQuater) << 1) + 1;                        
                         field = ((field - secondQuater) << 1) + (ulong)(reader.ReadBit() ? 1 : 0);
                     }
                 }
-
+                // E3
                 while ((minBound >= firstQuater) && (maxBound < thirdQuarter)) {
                     minBound = (minBound - firstQuater) << 1;
                     maxBound = ((maxBound - firstQuater) << 1) + 1;                    
-                    field = ((field - firstQuater) << 1) + (ulong)(reader.ReadBit() ? 1 : 0) ;
+                    field = ((field - firstQuater) << 1) + (ulong)(reader.ReadBit() ? 1 : 0);
                 }
             }
         }

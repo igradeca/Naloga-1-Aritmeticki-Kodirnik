@@ -12,7 +12,7 @@ namespace Aritmetic_coding {
 
         public Aritmetic() {    // encoding
 
-            encoder = new Encoding(8);            
+            encoder = new Encoding(64);
         }
 
         public Aritmetic(byte bitsNumber) {     // decoding

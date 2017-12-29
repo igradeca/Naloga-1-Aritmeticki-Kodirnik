@@ -69,10 +69,10 @@ namespace Aritmetic_coding {
         private void SetEncodingTable(byte[] data) {
 
             ulong lowerBoundary = 0;
-            ulong upperBoundary = (ulong)Math.Pow(2, (encodingBits - 1)) - 1;
-            ulong secondQuater = (ulong)Math.Floor((decimal)(upperBoundary + 1) / 2);
-            ulong firstQuater = (ulong)Math.Floor((decimal)secondQuater / 2);
-            ulong thirdQuarter = (ulong)Math.Floor((decimal)firstQuater * 3);
+            var upperBoundary = (ulong)(Math.Pow(2, (encodingBits - 1)) - 1);
+            var secondQuater = (upperBoundary + 1) / 2;
+            var firstQuater = secondQuater / 2;
+            var thirdQuarter = firstQuater * 3;
 
             ulong step;
             int E3_Counter = 0;
@@ -109,7 +109,6 @@ namespace Aritmetic_coding {
                         }
                     }
                 }
-
                 // E3
                 while ((lowerBoundary >= firstQuater) && (upperBoundary < thirdQuarter)) {
                     lowerBoundary = (lowerBoundary - firstQuater) << 1;
